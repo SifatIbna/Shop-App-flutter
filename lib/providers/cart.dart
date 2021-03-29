@@ -45,18 +45,24 @@ class Cart with ChangeNotifier {
               ));
     } else {
       _items.putIfAbsent(
-          productId,
-          () => CartItem(
-              id: DateTime.now().toString(),
-              title: title,
-              price: price,
-              quantity: 1));
+        productId,
+        () => CartItem(
+            id: DateTime.now().toString(),
+            title: title,
+            price: price,
+            quantity: 1),
+      );
     }
     notifyListeners();
   }
 
   void removeItem(String productId) {
     _items.remove(productId);
+    notifyListeners();
+  }
+
+  void clear() {
+    _items = {};
     notifyListeners();
   }
 }
