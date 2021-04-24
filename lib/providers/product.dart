@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart';
+import 'package:shop_app_flutter/models/http_exceptions.dart';
 
 class Product with ChangeNotifier {
   final String id;
@@ -17,7 +21,23 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  void toggleFavoriteStatus() {
+  Future<void> toggleFavoriteStatus() async {
+    final url =
+        "https://shop-app-project-cb096-default-rtdb.firebaseio.com/prodcuts/$id.json";
+
+    final response = await patch(
+      Uri.parse(url),
+      body: json.encode(
+        {
+          "isFavorite": !isFavorite,
+        },
+      ),
+    );
+
+    if (response.statusCode >= 400) {
+      throw HttpException(message: "Some Error Occured!");
+    }
+
     isFavorite = !isFavorite;
     notifyListeners();
   }
