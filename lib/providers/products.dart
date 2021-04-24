@@ -95,6 +95,7 @@ class Products with ChangeNotifier {
           },
         ),
       );
+
       print(json.decode(response.body));
 
       final newProduct = Product(
@@ -145,6 +146,7 @@ class Products with ChangeNotifier {
 
     _items.removeAt(existingProductIndex);
     notifyListeners();
+
     // firebase doesn't throw error on deletion when deleting data.
     // so we have to create our own custom error function , HttpException
 
